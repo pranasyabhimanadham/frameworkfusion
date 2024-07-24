@@ -93,43 +93,59 @@ export default function MyRecipes() {
 
   const handleDelete = async (recipeId: any) => {
     try {
-      const url = process.env.NODE_ENV === "production" ? 
-        "https://recipe-sharing-942n.onrender.com" : 
-        "http://localhost:7000";
-      
-      console.log(`Deleting recipe from: ${url}/api/recipe/${recipeId}/delete`);
-      
+      let url;
+      if (process.env.NODE_ENV === "production") {
+        url = "https://recipe-sharing-942n.onrender.com";
+      } else {
+        url = "http://localhost:7000";
+      }
       await Axios.delete(`${url}/api/recipe/${recipeId}/delete`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${Cookies.get("currentUser")}`,
         },
       });
-  
-      // Refresh recipes after delete
-      setLoading(true);
-      const response = await Axios.get(`${url}/api/userRecipes`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${Cookies.get("currentUser")}`,
-        },
-      });
-  
-      const { recipes } = response.data;
-      setRecipes(recipes);
-      setLoading(false);
+      try {
+        setLoading(true);
+        let url;
+        if (process.env.NODE_ENV === "production") {
+          url = "https://recipe-sharing-942n.onrender.com";
+        } else {
+          url = "http://localhost:7000";
+        }
+        const response = await Axios.get(`${url}/api/userRecipes`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${Cookies.get("currentUser")}`,
+          },
+        });
+        const { recipes } = response.data;
+        setRecipes(recipes);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log(error);
+        if (error instanceof AxiosError) {
+          console.log(error.message);
+          if (error.message.toLowerCase() === "network error") {
+            setError(error.message);
+          } else {
+            setError(error.response?.data.error);
+          }
+        }
+      }
     } catch (error) {
-      setLoading(false);
-      console.error('Error:', error);
+      console.log(error);
       if (error instanceof AxiosError) {
-        console.error('Error response:', error.response);
-        setError(error.response?.data.error || error.message);
-      } else {
-        console.error('Unexpected error:', error);
-        setError("An unexpected error occurred");
+        console.log(error.message);
+        if (error.message.toLowerCase() === "network error") {
+          setError(error.message);
+        } else {
+          setError(error.response?.data.error);
+        }
       }
     }
-  };  
+  };
 
   let numCols = 3;
   if (recipes.length === 2) {
@@ -183,22 +199,6 @@ export default function MyRecipes() {
                     />
                   </div>
                   <div className="mt-3 space-y-2 px-3 pb-3">
-                  <Link
-                  href={`/edit-recipe/${recipe._id}`}
-                  className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-blue-500 duration-150 hover:bg-blue-400 active:bg-blue-600 rounded-full">
-                    Edit Recipe
-                    <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    className="w-5 h-5">
-                      <path
-                      fillRule="evenodd"
-                      d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-                      clipRule="evenodd"
-                      />
-                      </svg>
-                      </Link>
                     <span className="block text-[#7e525f] text-sm">
                       {dateFormat(recipe.createdAt)}
                     </span>
