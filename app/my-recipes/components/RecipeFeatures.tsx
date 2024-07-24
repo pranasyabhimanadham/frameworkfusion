@@ -214,24 +214,6 @@ export default function RecipeFeatures({ handleDelete, link }: any) {
                   Share
                 </DropdownMenuItem>
               </DialogTrigger>
-              <DropdownMenuItem>
-                <svg
-                  className="w-6 mr-2"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z"
-                    fill="#7e525f"
-                  />
-                  <path
-                    d="M14.59 8.58L12 11.17L9.41 8.58L8 10L11 13L8 16L9.41 17.42L12 14.83L14.59 17.42L16 16L13 13L16 10L14.59 8.58Z"
-                    fill="#7e525f"
-                  />
-                </svg>
-                Edit
-              </DropdownMenuItem>
               <DropdownMenuItem className="text-red-600">
                 <AlertDialogTrigger className="inline-flex items-center w-full">
                   <svg
