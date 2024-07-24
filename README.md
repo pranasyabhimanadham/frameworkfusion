@@ -1,2 +1,2 @@
-# lab-5-pranasyabhimanadham
-lab-5-pranasyabhimanadham created by GitHub Classroom
+# Project Details
+Sai Pranasya - created UI, pages, compenents, Backend and frontend.
